@@ -13,6 +13,8 @@ class Normal(smach.State):
         smach.State.__init__(self, outcomes=['sleep','play'])
 
     def execute(self, userdata):
+        time.sleep(2)
+        rospy.loginfo('Executing state NORMAL\n')
         # While sleepcounter < threshold 
         #   if person issued a play command
         #       change state to play
@@ -22,24 +24,30 @@ class Normal(smach.State):
         #   
         #   sleepcounter = 0
         #   change state to sleep
+        return 'sleep'
 
 # Define state Sleep
-class Sleep(smach.state):
+class Sleep(smach.State):
     def __init__(self):
         smach.State.__init__(self, outcomes=['wakeup'])
 
     def execute(self, userdata):
+        time.sleep(4)
+        rospy.loginfo('Executing state SLEEP\n')
         # retrieve "home" position
         # call robot control service to go "home"
         # wait for x seconds
         # change state to normal
+        return 'wakeup'
 
 # Define state Play
-class Play(smach.state):
+class Play(smach.State):
     def __init__(self):
         smach.State.__init__(self, outcomes=['stopplaying'])
 
     def execute(self, userdata):
+        time.sleep(2)
+        rospy.loginfo('Executing state PLAY\n')
         # retrieve the person's position
         # call robot control service to go to the person's position
         # sleepcounter++
@@ -55,6 +63,7 @@ class Play(smach.state):
         # gesturesPerformed = 0
         # timePassed = 0
         # change state to normal
+        return 'stopplaying'
 
 # Main function
 def main():

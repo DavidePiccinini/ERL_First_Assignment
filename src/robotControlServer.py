@@ -11,9 +11,10 @@ import random
 def checkConsistency(x, y):
 
     # Get the map's xmax and ymax
-    xmax = rospy.get_param("/map/xmax")
-    ymax = rospy.get_param("/map/ymax")
+    # xmax = rospy.get_param("/map/xmax")
+    # ymax = rospy.get_param("/map/ymax")
 
+    '''
     if x >= 0 and x <= xmax and y >= 0 and y <= ymax:
         
         print("Requested location is valid.\n")
@@ -22,6 +23,10 @@ def checkConsistency(x, y):
 
         print("Requested location is invalid.\n")
         return False
+    '''
+    return True
+
+    
 
 # Callback function
 def moveToDestination(req):
