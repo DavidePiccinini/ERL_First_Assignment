@@ -23,14 +23,17 @@ def person():
         com = VoiceCommand()
         com.command = 'play'
         pub1.publish(com)
+        time.sleep(3)
 
         # Publish a location
         # rospy.loginfo('Sending pointing gesture.\n')
+        '''
         loc = Location()
         loc.x = 1
         loc.y = 1
         pub2.publish(loc)
         time.sleep(3)
+        '''
 
 if __name__ == "__main__":
     try:

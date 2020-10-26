@@ -24,9 +24,8 @@ def checkConsistency(x, y):
         print("Requested location is invalid.\n")
         return False
     '''
+    print("Requested location is valid.\n")
     return True
-
-    
 
 # Callback function
 def moveToDestination(req):
@@ -38,9 +37,9 @@ def moveToDestination(req):
         # destination has been reached
 
         # sleepTime = random.randint(2, 8)
-        sleepTime = 1
+        sleepTime = 5
         time.sleep(sleepTime)
-        print("Reached destination (%s, %s).\n", req.x, req.y)
+        print("The robot reached destination (%d, %d).\n"%(req.x, req.y))
         return MoveRobotResponse(True)
     else:
         return MoveRobotResponse(False)

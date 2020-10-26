@@ -10,7 +10,11 @@ from std_msgs.msg import String
 from erl_first_assignment.srv import MoveRobot
 from erl_first_assignment.msg import Location, VoiceCommand
 
-# Service call
+playState = False
+
+## Function robotControlClient
+#  Callback function for when the user sends a pointing gesture
+#  Calls the "robot_control" service
 def robotControlClient(x, y):
     rospy.wait_for_service('robot_control')
     try:
@@ -20,25 +24,36 @@ def robotControlClient(x, y):
     except rospy.ServiceException as e:
         print("Service call failed %s.\n"%e)
 
-# Callback for the 'voice_command' topic
+## Function receivedVoiceCommand
+#  Callback for the 'voice_command' topic
 def receivedVoiceCommand(data):
-    rospy.loginfo(rospy.get_caller_id() + "The NORMAL state received the command %s.\n", data.data)
+    rospy.loginfo("The NORMAL state received the command %s.\n"%data.command)
     playState = True
 
-# Callback for the 'pointing_gesture' topic
+## Function receivedPointingGesture
+#  Callback for the 'pointing_gesture' topic
 def receivedPointingGesture(data):
-    rospy.loginfo(rospy.get_caller_id() + "The PLAY state received the pointing gesture (%s, %s).\n", data.data.x, data.data.y)
+    rospy.loginfo("The PLAY state received the pointing gesture (%s, %s).\n"%(data.x, data.y))
     # Service call
 
-# Define state Normal
+## Class Normal
+#  Define Normal state
 class Normal(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=['sleep','play'])
+        smach.State.__init__(self, outcomes=['sleep','play'],
+                                   input_keys=['sleep_counter_in'],
+                                   output_keys=['sleep_counter_out'])
         rospy.Subscriber('voice_command', VoiceCommand, receivedVoiceCommand)
+        self.threshold = 5
 
     def execute(self, userdata):
         time.sleep(2)
-        rospy.loginfo('Executing state NORMAL\n')
+        rospy.loginfo('Executing state NORMAL.\n')
+        sleepCounter = userdata.sleep_counter_in 
+
+        while sleepCounter < self.threshold:
+            robotControlClient(3, 3)
+            sleepCounter+=1
         # While sleepcounter < threshold 
         #   if person issued a play command
         #       change state to play
@@ -48,6 +63,7 @@ class Normal(smach.State):
         #   
         #   sleepcounter = 0
         #   change state to sleep
+        userdata.sleep_counter_out = sleepCounter
         return 'sleep'
 
 # Define state Sleep
@@ -58,16 +74,25 @@ class Sleep(smach.State):
     def execute(self, userdata):
         time.sleep(4)
         rospy.loginfo('Executing state SLEEP\n')
+
         # retrieve "home" position
+        # homex = rospy.get_param("/home/x")
+        # homey = rospy.get_param("/home/y")
+        homex = 2
+        homey = 2
         # call robot control service to go "home"
+        robotControlClient(homex, homey)
         # wait for x seconds
+        time.sleep(10)
         # change state to normal
         return 'wakeup'
 
 # Define state Play
 class Play(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=['stopplaying'])
+        smach.State.__init__(self, outcomes=['stopplaying'],
+                                   input_keys=['sleep_counter_in'],
+                                   output_keys=['sleep_counter_out'])
         rospy.Subscriber('pointing_gesture', Location, receivedPointingGesture)
 
     def execute(self, userdata):
@@ -103,11 +128,15 @@ def main():
         # Add states to the container
         smach.StateMachine.add('NORMAL', Normal(),
                                 transitions={'sleep': 'SLEEP',
-                                             'play': 'PLAY'})
+                                             'play': 'PLAY'},
+                                remapping={'sleep_counter_in':'s_counter', 
+                                           'sleep_counter_out':'s_counter'})
         smach.StateMachine.add('SLEEP', Sleep(),
                                 transitions={'wakeup': 'NORMAL'})
         smach.StateMachine.add('PLAY', Play(),
-                                transitions={'stopplaying': 'NORMAL'})
+                                transitions={'stopplaying': 'NORMAL'},
+                                remapping={'sleep_counter_in':'s_counter', 
+                                           'sleep_counter_out':'s_counter'})
 
     # Create and start the introspection server for visualization
     sis = smach_ros.IntrospectionServer('server_name', sm, '/SM_ROOT')
