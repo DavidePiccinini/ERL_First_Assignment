@@ -6,11 +6,35 @@ import smach
 import smach_ros
 import time
 import random
+from std_msgs.msg import String
+from erl_first_assignment.srv import MoveRobot
+from erl_first_assignment.msg import Location, VoiceCommand
+
+# Service call
+def robotControlClient(x, y):
+    rospy.wait_for_service('robot_control')
+    try:
+        robot_control = rospy.ServiceProxy('robot_control', MoveRobot)
+        response = robot_control(x, y)
+        return response.goalReached
+    except rospy.ServiceException as e:
+        print("Service call failed %s.\n"%e)
+
+# Callback for the 'voice_command' topic
+def receivedVoiceCommand(data):
+    rospy.loginfo(rospy.get_caller_id() + "The NORMAL state received the command %s.\n", data.data)
+    playState = True
+
+# Callback for the 'pointing_gesture' topic
+def receivedPointingGesture(data):
+    rospy.loginfo(rospy.get_caller_id() + "The PLAY state received the pointing gesture (%s, %s).\n", data.data.x, data.data.y)
+    # Service call
 
 # Define state Normal
 class Normal(smach.State):
     def __init__(self):
         smach.State.__init__(self, outcomes=['sleep','play'])
+        rospy.Subscriber('voice_command', VoiceCommand, receivedVoiceCommand)
 
     def execute(self, userdata):
         time.sleep(2)
@@ -44,9 +68,10 @@ class Sleep(smach.State):
 class Play(smach.State):
     def __init__(self):
         smach.State.__init__(self, outcomes=['stopplaying'])
+        rospy.Subscriber('pointing_gesture', Location, receivedPointingGesture)
 
     def execute(self, userdata):
-        time.sleep(2)
+        time.sleep(4)
         rospy.loginfo('Executing state PLAY\n')
         # retrieve the person's position
         # call robot control service to go to the person's position
@@ -67,7 +92,7 @@ class Play(smach.State):
 
 # Main function
 def main():
-    rospy.init_node('Robot_Behaviour')
+    rospy.init_node('Robot_Behaviour', anonymous=True)
 
     # Create a SMACH state machine
     sm = smach.StateMachine(outcomes=[])

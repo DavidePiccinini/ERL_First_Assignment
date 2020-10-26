@@ -46,8 +46,8 @@ def moveToDestination(req):
         return MoveRobotResponse(False)
 
 def robotControlServer():
-    rospy.init_node('robot_control_server')
-    s = rospy.Service('robot_control_server', MoveRobot, moveToDestination)
+    rospy.init_node('robot_control')
+    s = rospy.Service('robot_control', MoveRobot, moveToDestination)
     print("The robot is ready to receive commands.\n")
     rospy.spin()
 
