@@ -10,12 +10,12 @@ from std_msgs.msg import String
 from erl_first_assignment.srv import MoveRobot
 from erl_first_assignment.msg import Location, VoiceCommand
 
-playState = False
+##
+# Calls the "robot_control" service
+# @param x The x position of the destination
+# @param y The y position of the destination
+def robotControlCall(x, y):
 
-## Function robotControlClient
-#  Callback function for when the user sends a pointing gesture
-#  Calls the "robot_control" service
-def robotControlClient(x, y):
     rospy.wait_for_service('robot_control')
     try:
         robot_control = rospy.ServiceProxy('robot_control', MoveRobot)
@@ -24,69 +24,79 @@ def robotControlClient(x, y):
     except rospy.ServiceException as e:
         print("Service call failed %s.\n"%e)
 
-## Function receivedVoiceCommand
-#  Callback for the 'voice_command' topic
+## 
+# Callback for the 'voice_command' topic
+# @param data The voice command
 def receivedVoiceCommand(data):
+
     rospy.loginfo("The NORMAL state received the command %s.\n"%data.command)
-    playState = True
 
-## Function receivedPointingGesture
-#  Callback for the 'pointing_gesture' topic
+    # Change the robot state param
+    rospy.set_param("robot/state", "play")
+
+## 
+# Callback for the 'pointing_gesture' topic
+# @param data The pointed location
 def receivedPointingGesture(data):
-    rospy.loginfo("The PLAY state received the pointing gesture (%s, %s).\n"%(data.x, data.y))
-    # Service call
 
-## Class Normal
-#  Define Normal state
+    rospy.loginfo("The PLAY state received the pointing gesture (%s, %s).\n"%(data.x, data.y))
+    
+    # Service call
+    robotControlCall(data.x, data.y)
+
+##
+# Define Normal state
 class Normal(smach.State):
     def __init__(self):
         smach.State.__init__(self, outcomes=['sleep','play'],
                                    input_keys=['sleep_counter_in'],
                                    output_keys=['sleep_counter_out'])
+
         rospy.Subscriber('voice_command', VoiceCommand, receivedVoiceCommand)
         self.threshold = 5
 
     def execute(self, userdata):
-        time.sleep(2)
-        rospy.loginfo('Executing state NORMAL.\n')
+
+        time.sleep(5)
+        rospy.set_param("robot/state", "normal")
+        print('State machine: Executing state NORMAL.\n')
         sleepCounter = userdata.sleep_counter_in 
 
         while sleepCounter < self.threshold:
-            robotControlClient(3, 3)
+            robotControlCall(3, 3)
             sleepCounter+=1
-        # While sleepcounter < threshold 
-        #   if person issued a play command
-        #       change state to play
-        #   else
-        #       call robot control service with a random location
-        #       sleepcounter++
-        #   
-        #   sleepcounter = 0
-        #   change state to sleep
+
         userdata.sleep_counter_out = sleepCounter
         return 'sleep'
 
+##
 # Define state Sleep
 class Sleep(smach.State):
     def __init__(self):
-        smach.State.__init__(self, outcomes=['wakeup'])
+        smach.State.__init__(self, outcomes=['wakeup'],
+                                   output_keys=['sleep_counter_out'])
 
     def execute(self, userdata):
-        time.sleep(4)
-        rospy.loginfo('Executing state SLEEP\n')
+        
+        time.sleep(5)
+        rospy.set_param("robot/state", "sleep")
+        print('State machine: Executing state SLEEP\n')
 
-        # retrieve "home" position
-        # homex = rospy.get_param("/home/x")
-        # homey = rospy.get_param("/home/y")
-        homex = 2
-        homey = 2
-        # call robot control service to go "home"
-        robotControlClient(homex, homey)
-        # wait for x seconds
+        # Retrieve "home" position
+        homex = rospy.get_param("home/x")
+        homey = rospy.get_param("home/y")
+
+        # Call robot control service to go "home"
+        robotControlCall(homex, homey)
+
+        # Wait for x seconds
         time.sleep(10)
-        # change state to normal
+
+        # Go back to the normal state
+        userdata.sleep_counter_out = 0
         return 'wakeup'
 
+##
 # Define state Play
 class Play(smach.State):
     def __init__(self):
@@ -97,7 +107,9 @@ class Play(smach.State):
 
     def execute(self, userdata):
         time.sleep(4)
-        rospy.loginfo('Executing state PLAY\n')
+        rospy.set_param("robot/state", "play")
+        print('State machine: Executing state PLAY\n')
+
         # retrieve the person's position
         # call robot control service to go to the person's position
         # sleepcounter++
@@ -115,9 +127,10 @@ class Play(smach.State):
         # change state to normal
         return 'stopplaying'
 
-# Main function
+##
+# State machine initialization
 def main():
-    rospy.init_node('Robot_Behaviour', anonymous=True)
+    rospy.init_node('robot_behaviour', anonymous=True)
 
     # Create a SMACH state machine
     sm = smach.StateMachine(outcomes=[])
@@ -132,7 +145,8 @@ def main():
                                 remapping={'sleep_counter_in':'s_counter', 
                                            'sleep_counter_out':'s_counter'})
         smach.StateMachine.add('SLEEP', Sleep(),
-                                transitions={'wakeup': 'NORMAL'})
+                                transitions={'wakeup': 'NORMAL'},
+                                remapping={'sleep_counter_out':'s_counter'})
         smach.StateMachine.add('PLAY', Play(),
                                 transitions={'stopplaying': 'NORMAL'},
                                 remapping={'sleep_counter_in':'s_counter', 

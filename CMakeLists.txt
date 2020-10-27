@@ -162,7 +162,7 @@ include_directories(
  catkin_install_python(PROGRAMS
   scripts/state_machine.py
   scripts/person.py
-  scripts/robotControlServer.py
+  scripts/robot_control_server.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
