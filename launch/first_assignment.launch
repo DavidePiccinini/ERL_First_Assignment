@@ -9,10 +9,6 @@
     <arg name="person_x" default="5"/>
     <arg name="person_y" default="5"/>
 
-    <!-- Robot's initial position -->
-    <arg name="robot_x" default="0"/>
-    <arg name="robot_y" default="0"/>
-
     <!-- Home definition -->
     <arg name="home_x" default="2"/>
     <arg name="home_y" default="2"/>
@@ -30,20 +26,16 @@
     <param name="person/x" value="$(arg person_x)"/>
     <param name="person/y" value="$(arg person_y)"/>
 
-    <param name="robot/x" value="$(arg robot_x)"/>
-    <param name="robot/y" value="$(arg robot_y)"/>
-
     <param name="home/x" value="$(arg home_x)"/>
     <param name="home/y" value="$(arg home_y)"/>
 
     <param name="time_scale" value="$(arg time_scale)"/>
 
-
     <!-- The robot control service -->
     <node name="robot_control" pkg="erl_first_assignment" type="robot_control_server.py" output="screen"/>
 
     <!-- The finite state machine -->
-    <node name="robot_behaviour" pkg="erl_first_assignment" type="state_machine.py" output="screen"/>
+    <node name="robot_behaviour" pkg="erl_first_assignment" type="state_machine.py" output="screen" required="true"/>
 
     <!-- The person module -->
     <node name="person" pkg="erl_first_assignment" type="person.py" output="screen"/>

@@ -1,13 +1,17 @@
 #!/usr/bin/env python
 
+## @package person
+# Implements two publishers.
+# Mimics the behaviour of a person controlling the robot using voice commands or pointing gestures.
+
 import rospy
 import time
 import random
+import math
 from erl_first_assignment.msg import Location, VoiceCommand
 
 ##
-# Mimics the behaviour of a person controlling the robot.
-# Sends either a voice command or points a location depending on the robot state.
+# Publishes either a voice command or a location depending on the robot state.
 def person():
 
     # Voice command publisher 
@@ -19,45 +23,40 @@ def person():
     # Initialize the node
     rospy.init_node('person', anonymous=True)
 
+    # Retrieve the map's dimensions
+    mapx = rospy.get_param("map/xmax")
+    mapy = rospy.get_param("map/ymax")
+
+    # Retrieve the time scale
+    timeScale = rospy.get_param("time_scale")
+
     while not rospy.is_shutdown():
+
+        time.sleep(random.randint(5, 30) / timeScale)
 
         # Retrieve the robot state
         robotState = rospy.get_param("robot/state")
 
         # Logic for sending the commands
         if robotState == 'normal':
-            '''
-            time.sleep(20)
 
             # Send the play voice command
             com = VoiceCommand()
             com.command = 'play'
-
             print('Person: Sending voice command: play.\n')
             pub1.publish(com)
 
-            time.sleep(5)
-            '''
-            pass
         elif robotState == 'play':
-            '''
-            time.sleep(10)
 
             # Point a location
             loc = Location()
-            loc.x = 1
-            loc.y = 1
-
+            loc.x = random.randint(0, mapx + math.floor(mapx * 0.3))
+            loc.y = random.randint(0, mapy + math.floor(mapy * 0.3))
             print('Person: Pointing location (%d, %d).\n'%(loc.x, loc.y))
             pub2.publish(loc)
-
-            time.sleep(5)
-            pass
-            '''
+        
         else:
             print("Person: I'm letting the robot sleep peacefully.\n")
-            time.sleep(5)
-            pass
 
 if __name__ == "__main__":
     try:

@@ -1,0 +1,187 @@
+\hypertarget{namespacestate__machine}{}\doxysection{state\+\_\+machine Namespace Reference}
+\label{namespacestate__machine}\index{state\_machine@{state\_machine}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classstate__machine_1_1Normal}{Normal}}
+\begin{DoxyCompactList}\small\item\em Define \mbox{\hyperlink{classstate__machine_1_1Normal}{Normal}} state. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classstate__machine_1_1Play}{Play}}
+\begin{DoxyCompactList}\small\item\em Define \mbox{\hyperlink{classstate__machine_1_1Play}{Play}} state. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classstate__machine_1_1Sleep}{Sleep}}
+\begin{DoxyCompactList}\small\item\em Define \mbox{\hyperlink{classstate__machine_1_1Sleep}{Sleep}} state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacestate__machine_a40d76ea0a6882c307a5ca913f560b84e}{robot\+Control\+Call}} (x, y)
+\begin{DoxyCompactList}\small\item\em Calls the \char`\"{}robot\+\_\+control\char`\"{} service. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacestate__machine_a75698390859df1fd887deb5092974e92}{received\+Voice\+Command}} (data)
+\begin{DoxyCompactList}\small\item\em Callback for the \textquotesingle{}voice\+\_\+command\textquotesingle{} topic. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacestate__machine_ae74be5c2424886a4c73e379bd17ef6ab}{received\+Pointing\+Gesture}} (data)
+\begin{DoxyCompactList}\small\item\em Callback for the \textquotesingle{}pointing\+\_\+gesture\textquotesingle{} topic. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacestate__machine_a5c680ce705e6052fa07c6cece21743d0}{main}} ()
+\begin{DoxyCompactList}\small\item\em State machine initialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacestate__machine_a1889bb3f4b5762a1154d7c93fda17676}{personx}} = rospy.\+get\+\_\+param(\char`\"{}person/x\char`\"{})
+\begin{DoxyCompactList}\small\item\em The person\textquotesingle{}s position. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacestate__machine_a80297a99e18c04795c438ad594771e36}{persony}} = rospy.\+get\+\_\+param(\char`\"{}person/y\char`\"{})
+\item 
+\mbox{\hyperlink{namespacestate__machine_aa6c18f40cbcdee5f3cfbdea7d4323c6e}{homex}} = rospy.\+get\+\_\+param(\char`\"{}home/x\char`\"{})
+\begin{DoxyCompactList}\small\item\em The \char`\"{}home\char`\"{} position. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacestate__machine_a8ed40c81f0c00d3ba1409b6ccb61b31a}{homey}} = rospy.\+get\+\_\+param(\char`\"{}home/y\char`\"{})
+\item 
+\mbox{\hyperlink{namespacestate__machine_ace6102908ae308ac996bced35db33bcf}{mapx}} = rospy.\+get\+\_\+param(\char`\"{}map/xmax\char`\"{})
+\begin{DoxyCompactList}\small\item\em The map\textquotesingle{}s boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacestate__machine_aec63a6000f60211ddd38bb8b65d4ece0}{mapy}} = rospy.\+get\+\_\+param(\char`\"{}map/ymax\char`\"{})
+\item 
+\mbox{\hyperlink{namespacestate__machine_a00c5678c5090cabc5f893ab5730e0c85}{time\+Scale}} = rospy.\+get\+\_\+param(\char`\"{}time\+\_\+scale\char`\"{})
+\begin{DoxyCompactList}\small\item\em The time scale of the simulation. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespacestate__machine_a7208c861d7b3b5dd27f9540663669e19}{sleep\+Counter}} = 0
+\begin{DoxyCompactList}\small\item\em Counter. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacestate__machine_ac1331687f770ad635916335592c69b0b}{play\+State}} = False
+\begin{DoxyCompactList}\small\item\em Flag for notifying the N\+O\+R\+M\+AL state that the person published a play command. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Defines the different robot behaviours and the transitions between them. Available states are N\+O\+R\+M\+AL, S\+L\+E\+EP and P\+L\+AY. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacestate__machine_a5c680ce705e6052fa07c6cece21743d0}\label{namespacestate__machine_a5c680ce705e6052fa07c6cece21743d0}} 
+\index{state\_machine@{state\_machine}!main@{main}}
+\index{main@{main}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily def state\+\_\+machine.\+main (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+State machine initialization. 
+
+\mbox{\Hypertarget{namespacestate__machine_ae74be5c2424886a4c73e379bd17ef6ab}\label{namespacestate__machine_ae74be5c2424886a4c73e379bd17ef6ab}} 
+\index{state\_machine@{state\_machine}!receivedPointingGesture@{receivedPointingGesture}}
+\index{receivedPointingGesture@{receivedPointingGesture}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{receivedPointingGesture()}{receivedPointingGesture()}}
+{\footnotesize\ttfamily def state\+\_\+machine.\+received\+Pointing\+Gesture (\begin{DoxyParamCaption}\item[{}]{data }\end{DoxyParamCaption})}
+
+
+
+Callback for the \textquotesingle{}pointing\+\_\+gesture\textquotesingle{} topic. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & The pointed location \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacestate__machine_a75698390859df1fd887deb5092974e92}\label{namespacestate__machine_a75698390859df1fd887deb5092974e92}} 
+\index{state\_machine@{state\_machine}!receivedVoiceCommand@{receivedVoiceCommand}}
+\index{receivedVoiceCommand@{receivedVoiceCommand}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{receivedVoiceCommand()}{receivedVoiceCommand()}}
+{\footnotesize\ttfamily def state\+\_\+machine.\+received\+Voice\+Command (\begin{DoxyParamCaption}\item[{}]{data }\end{DoxyParamCaption})}
+
+
+
+Callback for the \textquotesingle{}voice\+\_\+command\textquotesingle{} topic. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data} & The voice command \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{namespacestate__machine_a40d76ea0a6882c307a5ca913f560b84e}\label{namespacestate__machine_a40d76ea0a6882c307a5ca913f560b84e}} 
+\index{state\_machine@{state\_machine}!robotControlCall@{robotControlCall}}
+\index{robotControlCall@{robotControlCall}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{robotControlCall()}{robotControlCall()}}
+{\footnotesize\ttfamily def state\+\_\+machine.\+robot\+Control\+Call (\begin{DoxyParamCaption}\item[{}]{x,  }\item[{}]{y }\end{DoxyParamCaption})}
+
+
+
+Calls the \char`\"{}robot\+\_\+control\char`\"{} service. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & The x position of the destination \\
+\hline
+{\em y} & The y position of the destination \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacestate__machine_aa6c18f40cbcdee5f3cfbdea7d4323c6e}\label{namespacestate__machine_aa6c18f40cbcdee5f3cfbdea7d4323c6e}} 
+\index{state\_machine@{state\_machine}!homex@{homex}}
+\index{homex@{homex}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{homex}{homex}}
+{\footnotesize\ttfamily state\+\_\+machine.\+homex = rospy.\+get\+\_\+param(\char`\"{}home/x\char`\"{})}
+
+
+
+The \char`\"{}home\char`\"{} position. 
+
+\mbox{\Hypertarget{namespacestate__machine_a8ed40c81f0c00d3ba1409b6ccb61b31a}\label{namespacestate__machine_a8ed40c81f0c00d3ba1409b6ccb61b31a}} 
+\index{state\_machine@{state\_machine}!homey@{homey}}
+\index{homey@{homey}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{homey}{homey}}
+{\footnotesize\ttfamily state\+\_\+machine.\+homey = rospy.\+get\+\_\+param(\char`\"{}home/y\char`\"{})}
+
+\mbox{\Hypertarget{namespacestate__machine_ace6102908ae308ac996bced35db33bcf}\label{namespacestate__machine_ace6102908ae308ac996bced35db33bcf}} 
+\index{state\_machine@{state\_machine}!mapx@{mapx}}
+\index{mapx@{mapx}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{mapx}{mapx}}
+{\footnotesize\ttfamily state\+\_\+machine.\+mapx = rospy.\+get\+\_\+param(\char`\"{}map/xmax\char`\"{})}
+
+
+
+The map\textquotesingle{}s boundaries. 
+
+\mbox{\Hypertarget{namespacestate__machine_aec63a6000f60211ddd38bb8b65d4ece0}\label{namespacestate__machine_aec63a6000f60211ddd38bb8b65d4ece0}} 
+\index{state\_machine@{state\_machine}!mapy@{mapy}}
+\index{mapy@{mapy}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{mapy}{mapy}}
+{\footnotesize\ttfamily state\+\_\+machine.\+mapy = rospy.\+get\+\_\+param(\char`\"{}map/ymax\char`\"{})}
+
+\mbox{\Hypertarget{namespacestate__machine_a1889bb3f4b5762a1154d7c93fda17676}\label{namespacestate__machine_a1889bb3f4b5762a1154d7c93fda17676}} 
+\index{state\_machine@{state\_machine}!personx@{personx}}
+\index{personx@{personx}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{personx}{personx}}
+{\footnotesize\ttfamily state\+\_\+machine.\+personx = rospy.\+get\+\_\+param(\char`\"{}person/x\char`\"{})}
+
+
+
+The person\textquotesingle{}s position. 
+
+\mbox{\Hypertarget{namespacestate__machine_a80297a99e18c04795c438ad594771e36}\label{namespacestate__machine_a80297a99e18c04795c438ad594771e36}} 
+\index{state\_machine@{state\_machine}!persony@{persony}}
+\index{persony@{persony}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{persony}{persony}}
+{\footnotesize\ttfamily state\+\_\+machine.\+persony = rospy.\+get\+\_\+param(\char`\"{}person/y\char`\"{})}
+
+\mbox{\Hypertarget{namespacestate__machine_ac1331687f770ad635916335592c69b0b}\label{namespacestate__machine_ac1331687f770ad635916335592c69b0b}} 
+\index{state\_machine@{state\_machine}!playState@{playState}}
+\index{playState@{playState}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{playState}{playState}}
+{\footnotesize\ttfamily bool state\+\_\+machine.\+play\+State = False}
+
+
+
+Flag for notifying the N\+O\+R\+M\+AL state that the person published a play command. 
+
+\mbox{\Hypertarget{namespacestate__machine_a7208c861d7b3b5dd27f9540663669e19}\label{namespacestate__machine_a7208c861d7b3b5dd27f9540663669e19}} 
+\index{state\_machine@{state\_machine}!sleepCounter@{sleepCounter}}
+\index{sleepCounter@{sleepCounter}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{sleepCounter}{sleepCounter}}
+{\footnotesize\ttfamily int state\+\_\+machine.\+sleep\+Counter = 0}
+
+
+
+Counter. 
+
+\mbox{\Hypertarget{namespacestate__machine_a00c5678c5090cabc5f893ab5730e0c85}\label{namespacestate__machine_a00c5678c5090cabc5f893ab5730e0c85}} 
+\index{state\_machine@{state\_machine}!timeScale@{timeScale}}
+\index{timeScale@{timeScale}!state\_machine@{state\_machine}}
+\doxysubsubsection{\texorpdfstring{timeScale}{timeScale}}
+{\footnotesize\ttfamily state\+\_\+machine.\+time\+Scale = rospy.\+get\+\_\+param(\char`\"{}time\+\_\+scale\char`\"{})}
+
+
+
+The time scale of the simulation. 
+

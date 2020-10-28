@@ -1,0 +1,48 @@
+\hypertarget{state__machine_8py}{}\doxysection{scripts/state\+\_\+machine.py File Reference}
+\label{state__machine_8py}\index{scripts/state\_machine.py@{scripts/state\_machine.py}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classstate__machine_1_1Normal}{state\+\_\+machine.\+Normal}}
+\begin{DoxyCompactList}\small\item\em Define \mbox{\hyperlink{classstate__machine_1_1Normal}{Normal}} state. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classstate__machine_1_1Sleep}{state\+\_\+machine.\+Sleep}}
+\begin{DoxyCompactList}\small\item\em Define \mbox{\hyperlink{classstate__machine_1_1Sleep}{Sleep}} state. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classstate__machine_1_1Play}{state\+\_\+machine.\+Play}}
+\begin{DoxyCompactList}\small\item\em Define \mbox{\hyperlink{classstate__machine_1_1Play}{Play}} state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacestate__machine}{state\+\_\+machine}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{namespacestate__machine_a40d76ea0a6882c307a5ca913f560b84e}{state\+\_\+machine.\+robot\+Control\+Call}} (x, y)
+\begin{DoxyCompactList}\small\item\em Calls the \char`\"{}robot\+\_\+control\char`\"{} service. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacestate__machine_a75698390859df1fd887deb5092974e92}{state\+\_\+machine.\+received\+Voice\+Command}} (data)
+\begin{DoxyCompactList}\small\item\em Callback for the \textquotesingle{}voice\+\_\+command\textquotesingle{} topic. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacestate__machine_ae74be5c2424886a4c73e379bd17ef6ab}{state\+\_\+machine.\+received\+Pointing\+Gesture}} (data)
+\begin{DoxyCompactList}\small\item\em Callback for the \textquotesingle{}pointing\+\_\+gesture\textquotesingle{} topic. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{namespacestate__machine_a5c680ce705e6052fa07c6cece21743d0}{state\+\_\+machine.\+main}} ()
+\begin{DoxyCompactList}\small\item\em State machine initialization. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacestate__machine_a1889bb3f4b5762a1154d7c93fda17676}{state\+\_\+machine.\+personx}} = rospy.\+get\+\_\+param(\char`\"{}person/x\char`\"{})
+\begin{DoxyCompactList}\small\item\em The person\textquotesingle{}s position. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacestate__machine_a80297a99e18c04795c438ad594771e36}{state\+\_\+machine.\+persony}} = rospy.\+get\+\_\+param(\char`\"{}person/y\char`\"{})
+\item 
+\mbox{\hyperlink{namespacestate__machine_aa6c18f40cbcdee5f3cfbdea7d4323c6e}{state\+\_\+machine.\+homex}} = rospy.\+get\+\_\+param(\char`\"{}home/x\char`\"{})
+\begin{DoxyCompactList}\small\item\em The \char`\"{}home\char`\"{} position. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacestate__machine_a8ed40c81f0c00d3ba1409b6ccb61b31a}{state\+\_\+machine.\+homey}} = rospy.\+get\+\_\+param(\char`\"{}home/y\char`\"{})
+\item 
+\mbox{\hyperlink{namespacestate__machine_ace6102908ae308ac996bced35db33bcf}{state\+\_\+machine.\+mapx}} = rospy.\+get\+\_\+param(\char`\"{}map/xmax\char`\"{})
+\begin{DoxyCompactList}\small\item\em The map\textquotesingle{}s boundaries. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{namespacestate__machine_aec63a6000f60211ddd38bb8b65d4ece0}{state\+\_\+machine.\+mapy}} = rospy.\+get\+\_\+param(\char`\"{}map/ymax\char`\"{})
+\item 
+\mbox{\hyperlink{namespacestate__machine_a00c5678c5090cabc5f893ab5730e0c85}{state\+\_\+machine.\+time\+Scale}} = rospy.\+get\+\_\+param(\char`\"{}time\+\_\+scale\char`\"{})
+\begin{DoxyCompactList}\small\item\em The time scale of the simulation. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{namespacestate__machine_a7208c861d7b3b5dd27f9540663669e19}{state\+\_\+machine.\+sleep\+Counter}} = 0
+\begin{DoxyCompactList}\small\item\em Counter. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacestate__machine_ac1331687f770ad635916335592c69b0b}{state\+\_\+machine.\+play\+State}} = False
+\begin{DoxyCompactList}\small\item\em Flag for notifying the N\+O\+R\+M\+AL state that the person published a play command. \end{DoxyCompactList}\end{DoxyCompactItemize}
