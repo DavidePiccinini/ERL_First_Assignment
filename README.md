@@ -2,6 +2,8 @@
 This assignment consists in developing a simple software architecture to simulate the behaviour of a robot moving in a 2D plane. 
 The robot features three possible behaviours, i.e. Normal, Sleep and Play, and responds to user commands.
 
+---
+
 ## System Architecture
 
 ### Component Diagram
@@ -47,7 +49,15 @@ When the robot is in **Sleep** state, it first reaches the predefined "Home" loc
 When the robot is in **Play** state, it first reaches the user and then waits for him/her to point a location: when done, it reaches the pointed location and then comes back to the user only to wait for other gestures.
 The state automatically transitions back to *Normal* after some time has passed.
 
-## ROS messages and parameters
+### rqt_graph
+
+<p align="center"> 
+<img src="https://github.com/DavidePiccinini/ERL_First_Assignment/blob/master/diagrams/rosgraph.png?raw=true">
+</p>
+
+---
+
+## ROS Messages and Parameters
 
 Custom ROS **messages** are:
 
@@ -101,6 +111,115 @@ Custom ROS **parameters** are:
 
     Defines the state which the robot is currently in.
 
-## Packages and file list
+---
+
+## Packages and File List
 
 Going in alphabetical order:
+
+- **diagrams**
+
+    - `Component_Diagram.png`, `State_Diagram.png` and `rosgraph.png`
+
+        The three diagrams shown in this README file.
+
+- **documentation**
+
+    - **html** and **latex**
+
+        Contain the output of *Doxygen*.
+
+    - `assignment.conf`
+
+        Configuration file used to run *Doxygen*.
+
+- **launch**
+
+    - `first_assignment.launch`
+
+        The launchfile used to setup the system, it's called with several arguments which will become ROS parameters.
+
+- **msg**
+
+    - `Location.msg` and `VoiceCommand.msg`
+
+        As mentioned in the *ROS messages and parameters* section, they are custom messages used for the pub/sub interface.
+
+- **scripts**
+
+    - `person.py`, `robot_control_server.py` and `state_machine.py`
+
+        The modules of the architecture, as described in the *System Architecture* section.
+
+- **srv**
+
+    - `MoveRobot.srv`
+
+        As mentioned in the *ROS messages and parameters* section, it's a custom message used for the sever/client interface.
+
+- `CMakeLists.txt` and `package.xml`
+
+    Necessary files to compile and run the system nodes.
+
+---
+
+## Installation and Running Procedure
+
+Create a folder called *"erl_first_assignment"* in your ROS workspace's *"/src"* folder and then clone this repository inside it.
+
+Then, navigate to the *"/scripts"* folder and make the three Python scripts executable with:
+```
+$ chmod +x person.py
+$ chmod +x robot_control_server.py
+$ chmod +x state_machine.py
+```
+
+Go back to the root folder of your ROS workspace and execute:
+```
+$ catkin_make
+$ catkin_make install
+```
+
+In a separate terminal run:
+```
+$ roscore
+```
+
+You're almost ready to go! The last thing left to do is to run the launchfile:
+```
+$ roslaunch erl_first_assignment first_assignment.launch home_x:=<value> home_y:=<value> map_xmax:=<value> map_ymax:=<value> person_x:=<value> person_y:=<value> time_scale:=<value>
+```
+Where `<value>` stands for an integer you want the corresponding parameter to be set to (if you want to use default values simply delete one or more arguments from the command).
+
+The system will now setup and run, showing on the terminal the robot behaviour, state transitions, user interaction and movements.
+
+---
+
+## Working Hypothesis and Environment
+
+---
+
+## System's Features
+
+---
+
+## System's Limitations
+
+---
+
+## Possible Technical Improvements
+
+---
+
+## Authors and Contacts
+
+Davide Piccinini matricola S4404040
+Emails: 
+- piccio98dp@gmail.com
+- 4404040@studenti.unige.it
+
+---
+
+## Doxygen Documentation
+
+[Doxygen pdf documentation](https://github.com/DavidePiccinini/ERL_First_Assignment/tree/master/documentation/latex/refman.pdf)
