@@ -18,7 +18,6 @@ The software architecture is based on **three main components**:
 
     This module mimics the behaviour of a person that controls the robot via voice commands and by pointing gestures. 
 
-
     It features two pub/sub interfaces to communicate with the finite state machine component: one sends strings containing voice commands on the *"voice_command"* topic and the other one two integers defining a location on the *"pointing_gesture"* topic.
 
 - **Finite state machine**
@@ -165,7 +164,7 @@ Going in alphabetical order:
 
 ## Installation and Running Procedure
 
-Create a folder called *"erl_first_assignment"* in your ROS workspace's *"/src"* folder and then clone this repository inside it.
+First of all, clone this repository inside your ROS workspace's *"/src"* folder .
 
 Then, navigate to the *"/scripts"* folder and make the three Python scripts executable with:
 ```
@@ -189,7 +188,7 @@ You're almost ready to go! The last thing left to do is to run the launchfile:
 ```
 $ roslaunch erl_first_assignment first_assignment.launch home_x:=<value> home_y:=<value> map_xmax:=<value> map_ymax:=<value> person_x:=<value> person_y:=<value> time_scale:=<value>
 ```
-Where `<value>` stands for an integer you want the corresponding parameter to be set to (if you want to use default values simply delete one or more arguments from the command).
+Where `<value>` stands for an integer you want the corresponding parameter to be set to (if you want to use default values simply delete one or more arguments).
 
 The system will now setup and run, showing on the terminal the robot behaviour, state transitions, user interaction and movements.
 
@@ -197,17 +196,54 @@ The system will now setup and run, showing on the terminal the robot behaviour, 
 
 ## Working Hypothesis and Environment
 
+The **working hypotheses** are: 
+
+- The robot has no modules dedicated to sensing, which is considered implicit, thus the commands sent by the user are understood perfectly.
+
+- The person can, at any time, aknowledge exactly what the robot state is and thus sends commands accordingly; e.g. if the robot is in normal state he/she won't point a location.
+
+- The person only sends "play" voice commands or pointing gestures.
+
+- The robot knows the environment, i.e. the map's boundaries, the key locations position and the person position.
+
+- The robot can't switch states when it's moving, reaching a location is considered an atomic action.
+
+- The robot can go anywhere on the map.
+
+- The robot has infinite battery life, it never has to recharge.
+
+The **enviroment hypotheses** are:
+
+- The map is described by two values, `xmax` and `ymax`: it's assumed to be a rectangle starting from the origin O = (0, 0) and having as sides 2D vectors **OX** and **OY**, with X = (xmax, 0) and Y = (0, ymax).
+
+- The environment is free from obstacles.
+
+- The only key location the robot knows is "Home".
+
+- The person position is constant throughout the entire robot operation.
+
 ---
 
 ## System's Features
+
+The system satisfies all the requirements: the robot can transition corretly between states and executes the expected behaviour. Print functions placed in the components allow the user to monitor the robot and what is the person doing. The robot control also checks if the requested location is consistent with respect to the map's boundaries: if so, the robot moves, otherwise it doesnt.
+Having no sensing makes the system fast and reactive to commands.
+The robot control service can accomodate requests from one or more clients.
 
 ---
 
 ## System's Limitations
 
+The system is dependent on a person which sends fixed commands according to the robot state, but in principle we would like to have a flexible system that can receive a wide range of commands and then reasons about what to do.
+Implementing the robot control as a service has its pros, but a future development may want to make the robot able to transition between states while it's reaching a destination: doing so would require modifying both the finite state machine and the robot control component.
+The code is almost entirely *ad hoc* for the use case considered: the components aren't modular enough to be re-usable for other applications, they would need almost certainly additional work to fit in.
+
 ---
 
 ## Possible Technical Improvements
+
+A possible improvement would be removing the person component and instead develop two sensing components, one for voice commands and one for pointing gestures, which process respective user inputs and sends them to a reasoning component. The reasoning component would first check if the command is valid, then, depending on the robot's state, send data to the finite state machine. This would improve modularity and re-usability.
+Another improvement would be supporting other types of commands, for example the user could say the name of a key location, e.g. "Home", and the robot would go there. This is related to the reasoning component just mentioned and would require the user to add key locations via the ROS parameter server, which is already possible.
 
 ---
 
